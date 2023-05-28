@@ -2,7 +2,7 @@ Package: ZoopFit
 Type: Package
 Title: Statistical Modeling for Zooplankton Availability
 Version: 0.0.4
-Date: 2023-05-18
+Date: 2023-05-28
 Authors@R: c(
   person("Jorge", "Castillo-Mateo", role = c("aut","cre","cph"), email = "jorgecastillomateo@gmail.com", comment = c(ORCID = "0000-0003-3859-0248"))
     )
@@ -16,9 +16,7 @@ Description: This is the companion package for the paper Castillo-Mateo et al.
   outside of the data from the paper and it will likely lead to errors if used 
   with other datasets.
 License: GPL (>= 2)
-Imports: akima, ggplot2, lubridate, 
-  methods, raster, Rcpp (>= 1.0.7), 
-  sp, viridis
+Imports: ggplot2, lubridate, Rcpp (>= 1.0.7), scales, stats
 LinkingTo: Rcpp, RcppArmadillo
 Encoding: UTF-8
 RoxygenNote: 7.2.3

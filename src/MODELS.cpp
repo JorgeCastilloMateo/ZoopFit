@@ -56,9 +56,9 @@ arma::mat rWishart(arma::mat V, int p, double n) {
 //////////////////
 
 //' COMPUTE PRODUCT OF NORMAL DENSITIES
-//' @param mu vector mean
-//' @param prec vector precision
-//' @return vector(0) mean, vector(1) variance
+////' @param mu vector mean
+////' @param prec vector precision
+////' @return vector(0) mean, vector(1) variance
 // [[Rcpp::export]]
 arma::vec productNormals(arma::vec mu, arma::vec prec) {
   arma::vec x(2);

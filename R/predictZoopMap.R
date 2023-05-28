@@ -1,4 +1,6 @@
-#' ZOOP MAP prediction
+#' ZOOP MAP Prediction
+#' 
+#' @importFrom stats rnorm
 #' 
 #' @description This function predicts ZOOP in the given day.
 #'   The only covariates used are whale and regime (change if more are included).
@@ -12,6 +14,8 @@
 #' @param etats spatial field in ZOOP. 
 #'   Choose the eta from the year to predict.
 #' @return matrix: rows are simulations columns are ZOOP
+#' 
+#' @author Jorge Castillo-Mateo
 #' @export 
 predictZoopMap <- function(model, date = "2011-04-29", predictWhales, gamma0s, etats) {
   
@@ -33,7 +37,7 @@ predictZoopMap <- function(model, date = "2011-04-29", predictWhales, gamma0s, e
   temp <- model[,"sine"] * sin(2 * pi * day_year / 365) + 
     model[,"cosine"] * cos(2 * pi * day_year / 365) + 
     model[,paste0("psit", year-2002)] + gamma0s +
-    rnorm(B * m, sd = 1 / sqrt(model[,"precTemp"]))
+    stats::rnorm(B * m, sd = 1 / sqrt(model[,"precTemp"]))
   
   # ZOOP <- matrix(nrow = B, ncol = m)
   p <- predictWhales[, 181 * (year - 2003) + day_year]

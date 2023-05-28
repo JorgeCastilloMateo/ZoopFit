@@ -1,10 +1,12 @@
-#' Zoop prediction
+#' Predict Function for Zoop Models
 #' 
 #' @importFrom lubridate yday
 #' @importFrom lubridate year
 #' @importFrom stats dist
 #' 
-#' @description This function predicts Y1 Y2 T1 T2 temp and log ZOOP
+#' @description This function predicts \code{Y1}, \code{Y2}, \code{T1}, 
+#'   \code{T2}, true temp, and true log ZOOP based on \code{\link{GibbsZoop}}
+#'   models
 #' 
 #' @param model model fitted with the function \code{\link{GibbsZoop}}
 #' @param X covariates (whale, r2, r3): \eqn{1 \times p}
@@ -12,16 +14,10 @@
 #' @param coordsNew new coords
 #' @param dateData dates used to fit the model
 #' @param coordsData coords used to fit the model
-#' @param indY2 positions with Y2 not NA: \eqn{NY2 \times 1}
-#' @param indT2 positions with T2 not NA: \eqn{NT2 \times 1}
-#' @param calibration one of 
-#'   \code{c("lm", "GP", "GPs", "cor", "corTime")}
-#'   indicating a linear model (lm) in the calibration, a lm with
-#'   a spatially varying intercept, a lm with spatially varying 
-#'   intercept and slope, the same with coregionalization, and
-#'   the same with time varying coefs. in ZOOP calibration,
-#'   respectively
-#' @param rangeTimesDmax the same as used to fit the model
+#' @param indY2 positions with \code{Y2} not NA: \eqn{NY2 \times 1}
+#' @param indT2 positions with \code{T2} not NA: \eqn{NT2 \times 1}
+#' @param calibration same as in \code{\link{GibbsZoop}}
+#' @param rangeTimesDmax same as in \code{\link{GibbsZoop}}
 #' @examples
 #' #a <- predict(model, 
 #' #  X = c(1,0,0), 
@@ -36,12 +32,14 @@
 #' 
 #' @return matrix rows are simuations columns are:
 #'   Y1 Y2 T1 T2 temp and log ZOOP
+#'  
+#' @author Jorge Castillo-Mateo
 #' @export 
 predictZoop <- function(model, X, 
-                    dateNew, coordsNew, dateData, coordsData, 
-                    indY2 = NULL, indT2 = NULL, 
-                    calibration = c("lm", "GP", "GPs", "cor", "corTime"),
-                    rangeTimesDmax = 3) {
+  dateNew, coordsNew, dateData, coordsData, 
+  indY2 = NULL, indT2 = NULL, 
+  calibration = c("lm", "GP", "GPs", "cor", "corTime"),
+  rangeTimesDmax = 3) {
   
   calibration <- match.arg(calibration)
   if (length(rangeTimesDmax) == 1) {

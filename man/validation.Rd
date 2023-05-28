@@ -20,3 +20,6 @@ matrix with RMSE, MAE, CRPS and CVG
 \description{
 This function validates the model
 }
+\author{
+Jorge Castillo-Mateo
+}

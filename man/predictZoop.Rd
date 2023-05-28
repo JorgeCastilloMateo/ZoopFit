@@ -2,7 +2,7 @@
 % Please edit documentation in R/predictZoop.R
 \name{predictZoop}
 \alias{predictZoop}
-\title{Zoop prediction}
+\title{Predict Function for Zoop Models}
 \usage{
 predictZoop(
   model,
@@ -30,26 +30,22 @@ predictZoop(
 
 \item{coordsData}{coords used to fit the model}
 
-\item{indY2}{positions with Y2 not NA: \eqn{NY2 \times 1}}
+\item{indY2}{positions with \code{Y2} not NA: \eqn{NY2 \times 1}}
 
-\item{indT2}{positions with T2 not NA: \eqn{NT2 \times 1}}
+\item{indT2}{positions with \code{T2} not NA: \eqn{NT2 \times 1}}
 
-\item{calibration}{one of 
-\code{c("lm", "GP", "GPs", "cor", "corTime")}
-indicating a linear model (lm) in the calibration, a lm with
-a spatially varying intercept, a lm with spatially varying 
-intercept and slope, the same with coregionalization, and
-the same with time varying coefs. in ZOOP calibration,
-respectively}
+\item{calibration}{same as in \code{\link{GibbsZoop}}}
 
-\item{rangeTimesDmax}{the same as used to fit the model}
+\item{rangeTimesDmax}{same as in \code{\link{GibbsZoop}}}
 }
 \value{
 matrix rows are simuations columns are:
   Y1 Y2 T1 T2 temp and log ZOOP
 }
 \description{
-This function predicts Y1 Y2 T1 T2 temp and log ZOOP
+This function predicts \code{Y1}, \code{Y2}, \code{T1}, 
+  \code{T2}, true temp, and true log ZOOP based on \code{\link{GibbsZoop}}
+  models
 }
 \examples{
 #a <- predict(model, 
@@ -63,4 +59,7 @@ This function predicts Y1 Y2 T1 T2 temp and log ZOOP
 #  dateData = date, coordsData = coords,
 #  indY2, indT2, "GP")
 
+}
+\author{
+Jorge Castillo-Mateo
 }

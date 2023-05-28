@@ -1,26 +1,31 @@
-#' Mean surfaces of the GP's in GibbsZoop()
+#' Posterior Mean Surfaces of the GP's
 #' 
 #' @importFrom lubridate year
+#' @importFrom scales muted
 #' @importFrom stats dist
 #' 
 #' @description This function saves the map of the posterior mean of the
-#'   GP's in GibbsZoop
+#'   GP's in \code{\link{GibbsZoop}} when \code{calibration = "corTime"}
 #' 
 #' @param model parameters of \code{\link{GibbsZoop}}
 #' @param coords \eqn{N \times 2}
 #' @param date \eqn{N \times 1}
-#' @param oneY2 binary wether Y2 exists or not: \eqn{N \times 1}
-#' @param oneT2 binary wether T2 exists or not: \eqn{N \times 1}
-#' @param process one of \code{"eta"}, \code{"alpha"}, or \code{"lambda"}
+#' @param oneY2 binary wether \code{Y2} exists or not: \eqn{N \times 1}
+#' @param oneT2 binary wether \code{T2} exists or not: \eqn{N \times 1}
+#' @param process one of \code{"eta"} (zoop GP's), \code{"alpha"} (temp 
+#'   calibration GP's), \code{"lambda"} (zoop calibration GP's), or 
+#'   \code{"phi"} (temp GP)
 #' @param pred.coords coords where to predict
 #' @param background background of CCB 
 #' @param xlim,ylim,zlim x y z limits in the map
 #' @return Saved png
+#' 
+#' @author Jorge Castillo-Mateo
 #' @export 
 meanGP.GibbsZoop <- function(model, coords, date = NULL, 
   oneY2 = NULL, oneT2 = NULL, 
   process = c("eta", "alpha", "lambda", "phi"), 
-  pred.coords = grid, background = eeuu, 
+  pred.coords, background, 
   xlim = c(-61771.464, 1228.536), ylim = c(-34392.144, 13607.86), zlim = NULL) {
   
   process <- match.arg(process)
@@ -28,7 +33,7 @@ meanGP.GibbsZoop <- function(model, coords, date = NULL,
   B <- nrow(model)
   
   ## SPATIAL GRID ##
-  xy <- grid
+  xy <- pred.coords
   colnames(xy) <- c("X", "Y")
   
   if (process == "eta") {
@@ -100,7 +105,7 @@ meanGP.GibbsZoop <- function(model, coords, date = NULL,
               axis.title=ggplot2::element_text(size=10,face="bold"))
       
       map.ccb <- map.ccb + 
-        ggplot2::geom_tile(data=df, ggplot2::aes(x=lon, y=lat, fill=z)) + 
+        ggplot2::geom_tile(data=df, ggplot2::aes(x=df$lon, y=df$lat, fill=z)) + 
         ggplot2::scale_fill_gradient2(midpoint=0, low=scales::muted("blue"), mid="white",
                              high=scales::muted("red"), space ="Lab", limits = zlim) +
         ggplot2::labs(title = bquote(eta[.(tInd+firstYear)](s) - eta[.(tInd+firstYear)]), fill="")
@@ -157,7 +162,7 @@ meanGP.GibbsZoop <- function(model, coords, date = NULL,
             axis.title=ggplot2::element_text(size=10,face="bold"))
     
     map.ccb <- map.ccb + 
-      ggplot2::geom_tile(data=df, ggplot2::aes(x=lon, y=lat, fill=z)) + 
+      ggplot2::geom_tile(data=df, ggplot2::aes(x=df$lon, y=df$lat, fill=z)) + 
       ggplot2::scale_fill_gradient2(midpoint=0, low=scales::muted("blue"), mid="white",
                            high=scales::muted("red"), space ="Lab", limits = zlim[1,]) +
       ggplot2::labs(title = bquote(alpha[0](s)), fill="")
@@ -179,7 +184,7 @@ meanGP.GibbsZoop <- function(model, coords, date = NULL,
             axis.title=ggplot2::element_text(size=10,face="bold"))
     
     map.ccb <- map.ccb + 
-      ggplot2::geom_tile(data=df, ggplot2::aes(x=lon, y=lat, fill=z)) + 
+      ggplot2::geom_tile(data=df, ggplot2::aes(x=df$lon, y=df$lat, fill=z)) + 
       ggplot2::scale_fill_gradient2(midpoint=0, low=scales::muted("blue"), mid="white",
                            high=scales::muted("red"), space ="Lab", limits = zlim[2,]) +
       ggplot2::labs(title = bquote(alpha[1](s)), fill="")
@@ -236,7 +241,7 @@ meanGP.GibbsZoop <- function(model, coords, date = NULL,
             axis.title=ggplot2::element_text(size=10,face="bold"))
     
     map.ccb <- map.ccb + 
-      ggplot2::geom_tile(data=df, ggplot2::aes(x=lon, y=lat, fill=z)) + 
+      ggplot2::geom_tile(data=df, ggplot2::aes(x=df$lon, y=df$lat, fill=z)) + 
       ggplot2::scale_fill_gradient2(midpoint=0, low=scales::muted("blue"), mid="white",
                            high=scales::muted("red"), space ="Lab", limits = zlim[1,]) +
       ggplot2::labs(title = bquote(lambda[0](s)), fill="")
@@ -258,7 +263,7 @@ meanGP.GibbsZoop <- function(model, coords, date = NULL,
             axis.title=ggplot2::element_text(size=10,face="bold"))
     
     map.ccb <- map.ccb + 
-      ggplot2::geom_tile(data=df, ggplot2::aes(x=lon, y=lat, fill=z)) + 
+      ggplot2::geom_tile(data=df, ggplot2::aes(x=df$lon, y=df$lat, fill=z)) + 
       ggplot2::scale_fill_gradient2(midpoint=0, low=scales::muted("blue"), mid="white",
                            high=scales::muted("red"), space ="Lab", limits = zlim[2,]) +
       ggplot2::labs(title = bquote(lambda[1](s)), fill="")
@@ -306,7 +311,7 @@ meanGP.GibbsZoop <- function(model, coords, date = NULL,
             axis.title=ggplot2::element_text(size=10,face="bold"))
     
     map.ccb <- map.ccb + 
-      ggplot2::geom_tile(data=df, ggplot2::aes(x=lon, y=lat, fill=z)) + 
+      ggplot2::geom_tile(data=df, ggplot2::aes(x=df$lon, y=df$lat, fill=z)) + 
       ggplot2::scale_fill_gradient2(midpoint=0, low=scales::muted("blue"), mid="white",
                            high=scales::muted("red"), space ="Lab", limits = zlim) +
       ggplot2::labs(title = bquote(gamma[0](s)), fill="")

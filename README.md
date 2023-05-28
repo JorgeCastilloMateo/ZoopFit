@@ -27,7 +27,7 @@ A BibTeX entry for LaTeX users is
 @Article{,  
 &nbsp;&nbsp;  title = {Space-time multi-level modeling for zooplankton abundance employing double data fusion and calibration},  
 &nbsp;&nbsp;  author = {Jorge Castillo-Mateo and Alan E. Gelfand, Christine A. Hudak, Charles A. Mayo and Robert S. Schick},  
-&nbsp;&nbsp;  journal = {},  
+&nbsp;&nbsp;  journal = {Manuscript submitted for publication},  
 &nbsp;&nbsp;  year = {2023},  
 &nbsp;&nbsp;  volume = {},  
 &nbsp;&nbsp;  number = {},  
@@ -38,4 +38,5 @@ A BibTeX entry for LaTeX users is
   
 ## References
 Castillo-Mateo J, Gelfand AE, Hudak CA, Mayo CA, Schick RS (2023).
-“Space-time multi-level modeling for zooplankton abundance employing double data fusion and calibration.”
+“Space-time multi-level modeling for zooplankton abundance employing double data fusion and calibration.” 
+*Manuscript submitted for publication*.

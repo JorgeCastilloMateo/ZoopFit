@@ -1,21 +1,21 @@
-#' Double Calibration Zoop Model
+#' Double Fusion-Calibration Zoop Models
 #' 
 #' @importFrom lubridate year
 #' @importFrom stats dist
 #' 
-#' @description This function fits the model
+#' @description This function fits the double fusion and calibration zoop model
 #' 
-#' @param Y1 log Conical zoop: \eqn{N_{Y1} \times 1}
+#' @param Y1 log Surface zoop: \eqn{N_{Y1} \times 1}
 #' @param Y2 log Oblique zoop: \eqn{N_{Y2} \times 1}
 #' @param T1 CTD temperature: \eqn{N_{T1} \times 1}
 #' @param T2 therm temperature: \eqn{N_{T2} \times 1}
 #' @param X covariates (whale, r2, r3): \eqn{N \times p}
-#' @param date \eqn{N \times 1}
-#' @param coords \eqn{N \times 2}
-#' @param oneY1 binary wether Y1 exists or not: \eqn{N \times 1}
-#' @param oneY2 binary wether Y2 exists or not: \eqn{N \times 1}
-#' @param oneT1 binary wether T1 exists or not: \eqn{N \times 1}
-#' @param oneT2 binary wether T2 exists or not: \eqn{N \times 1}
+#' @param date measurements date: \eqn{N \times 1}
+#' @param coords measurements coordinate: \eqn{N \times 2}
+#' @param oneY1 binary wether \code{Y1} exists or not: \eqn{N \times 1}
+#' @param oneY2 binary wether \code{Y2} exists or not: \eqn{N \times 1}
+#' @param oneT1 binary wether \code{T1} exists or not: \eqn{N \times 1}
+#' @param oneT2 binary wether \code{T2} exists or not: \eqn{N \times 1}
 #' @param calibration one of 
 #'   \code{c("lm", "GP", "GPs", "cor", "corTime")}
 #'   indicating a linear model (lm) in the calibration, a lm with
@@ -29,12 +29,15 @@
 #'   Suggestion, keep between 3 and 30.
 #' @param sd tuned sd in rwMetropolis
 #' @param n.burnin,max.iter,n.thin,n.report features MCMC
-#' @return matrix
+#' @return Matrix with posterior samples from model parameters: 
+#'   rows are iterations and columns are parameters
+#'   
+#' @author Jorge Castillo-Mateo
 #' @export 
 GibbsZoop <- function(Y1, Y2, T1, T2, X, date, coords, oneY1, oneY2, oneT1, oneT2,
                       calibration = c("lm", "GP", "GPs", "cor", "corTime"),
                       na = 0, nb = 1e-4, ga = 2, gb = 1, rangeTimesDmax = 3, sd = 0.0001,
-                      n.burnin = 0, max.iter = 10000, n.thin = 1, n.report = 1000) {
+                      n.burnin = 10000, max.iter = 10000, n.thin = 10, n.report = 1000) {
   
   calibration <- match.arg(calibration)
   if (length(rangeTimesDmax) == 1) {
@@ -195,7 +198,7 @@ GibbsZoop <- function(Y1, Y2, T1, T2, X, date, coords, oneY1, oneY2, oneT1, oneT
         paste0("l0s", 1:nY2), "l1", "l0", "precl0", "decayl0", "precY2",
         paste0("temp", 1:N), paste0("phis", 1:n), "psi", "precphi", "precpsi", "sine", "cosine", "precTemp", paste0("psit", 1:T), "rhopsi")
   } else if (calibration == "GPs") {
-    stop("The model is wrong! I have to fix it! Not even updated since V0.0.1")
+    stop("This model is not implemented. Not updated since Version 0.0.1")
     keep <- GibbsZoop2Cpp(
       auxY1, auxY2, auxT1, auxT2,
       X, Xeta, XTEMP, R.phi.inverse.sum, RsumTEMP, R.phi.inverse, RinvTEMP, dMax,

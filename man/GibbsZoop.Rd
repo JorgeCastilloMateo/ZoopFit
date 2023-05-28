@@ -2,7 +2,7 @@
 % Please edit documentation in R/GibbsZoop.R
 \name{GibbsZoop}
 \alias{GibbsZoop}
-\title{Double Calibration Zoop Model}
+\title{Double Fusion-Calibration Zoop Models}
 \usage{
 GibbsZoop(
   Y1,
@@ -23,14 +23,14 @@ GibbsZoop(
   gb = 1,
   rangeTimesDmax = 3,
   sd = 1e-04,
-  n.burnin = 0,
+  n.burnin = 10000,
   max.iter = 10000,
-  n.thin = 1,
+  n.thin = 10,
   n.report = 1000
 )
 }
 \arguments{
-\item{Y1}{log Conical zoop: \eqn{N_{Y1} \times 1}}
+\item{Y1}{log Surface zoop: \eqn{N_{Y1} \times 1}}
 
 \item{Y2}{log Oblique zoop: \eqn{N_{Y2} \times 1}}
 
@@ -40,17 +40,17 @@ GibbsZoop(
 
 \item{X}{covariates (whale, r2, r3): \eqn{N \times p}}
 
-\item{date}{\eqn{N \times 1}}
+\item{date}{measurements date: \eqn{N \times 1}}
 
-\item{coords}{\eqn{N \times 2}}
+\item{coords}{measurements coordinate: \eqn{N \times 2}}
 
-\item{oneY1}{binary wether Y1 exists or not: \eqn{N \times 1}}
+\item{oneY1}{binary wether \code{Y1} exists or not: \eqn{N \times 1}}
 
-\item{oneY2}{binary wether Y2 exists or not: \eqn{N \times 1}}
+\item{oneY2}{binary wether \code{Y2} exists or not: \eqn{N \times 1}}
 
-\item{oneT1}{binary wether T1 exists or not: \eqn{N \times 1}}
+\item{oneT1}{binary wether \code{T1} exists or not: \eqn{N \times 1}}
 
-\item{oneT2}{binary wether T2 exists or not: \eqn{N \times 1}}
+\item{oneT2}{binary wether \code{T2} exists or not: \eqn{N \times 1}}
 
 \item{calibration}{one of 
 \code{c("lm", "GP", "GPs", "cor", "corTime")}
@@ -72,8 +72,12 @@ Suggestion, keep between 3 and 30.}
 \item{n.burnin, max.iter, n.thin, n.report}{features MCMC}
 }
 \value{
-matrix
+Matrix with posterior samples from model parameters: 
+  rows are iterations and columns are parameters
 }
 \description{
-This function fits the model
+This function fits the double fusion and calibration zoop model
+}
+\author{
+Jorge Castillo-Mateo
 }

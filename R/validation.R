@@ -9,6 +9,8 @@
 #'   columns are data
 #' @param alpha CVG level
 #' @return matrix with RMSE, MAE, CRPS and CVG
+#' 
+#' @author Jorge Castillo-Mateo
 #' @export 
 validation <- function(Y, Yhat, alpha = 0.1) {
   

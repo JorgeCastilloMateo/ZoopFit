@@ -9,7 +9,7 @@ recoverZoop(model, X, date, coords, do.mean = FALSE, log.scale = FALSE)
 \arguments{
 \item{model}{model fitted with the function \code{\link{GibbsZoop}}}
 
-\item{X}{covariates (whale, r2, r3?): \eqn{N \times p}}
+\item{X}{covariates (whale, r2, r3): \eqn{N \times p}}
 
 \item{date}{\eqn{N \times 1}}
 
@@ -39,4 +39,7 @@ This function recovers ZOOP from a fitted model
 #plot(beta[,3])
 #plot(beta[,4])
 
+}
+\author{
+Jorge Castillo-Mateo
 }

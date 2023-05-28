@@ -2,7 +2,7 @@
 % Please edit documentation in R/predictZoopMap.R
 \name{predictZoopMap}
 \alias{predictZoopMap}
-\title{ZOOP MAP prediction}
+\title{ZOOP MAP Prediction}
 \usage{
 predictZoopMap(model, date = "2011-04-29", predictWhales, gamma0s, etats)
 }
@@ -27,4 +27,7 @@ This function predicts ZOOP in the given day.
   The only covariates used are whale and regime (change if more are included).
   The spatial fields and probabilities of presence of whales must be 
   computed in advance and being introduced as arguments.
+}
+\author{
+Jorge Castillo-Mateo
 }

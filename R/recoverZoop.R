@@ -3,7 +3,7 @@
 #' @description This function recovers ZOOP from a fitted model
 #' 
 #' @param model model fitted with the function \code{\link{GibbsZoop}}
-#' @param X covariates (whale, r2, r3?): \eqn{N \times p}
+#' @param X covariates (whale, r2, r3): \eqn{N \times p}
 #' @param date \eqn{N \times 1}
 #' @param coords \eqn{N \times 2}
 #' @param do.mean return the mean? TRUE Or samples? FALSE
@@ -23,6 +23,7 @@
 #' #plot(beta[,3])
 #' #plot(beta[,4])
 #' 
+#' @author Jorge Castillo-Mateo
 #' @export 
 recoverZoop <- function(model, X, date, coords, do.mean = FALSE, log.scale = FALSE) {
   
