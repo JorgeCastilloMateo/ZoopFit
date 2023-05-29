@@ -293,7 +293,7 @@ sims <- function(iter) {
 
 # PARALLEL COMPUTING
 time <- Sys.time()
-n.cores <- parallel::detectCores() - 2
+n.cores <- max(parallel::detectCores() - 2, 2)
 cl <- parallel::makeCluster(n.cores)
 parallel::clusterExport(cl, c("model1", "model2", "nxy", "grid", "R"))
 metrics <- parallel::parSapply(cl = cl, X = 1:100, FUN = sims)

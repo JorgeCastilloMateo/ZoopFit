@@ -20,6 +20,10 @@ rWishart <- function(V, p, n) {
     .Call('_ZoopFit_rWishart', PACKAGE = 'ZoopFit', V, p, n)
 }
 
+mvrnormArma <- function(n, Sigma) {
+    .Call('_ZoopFit_mvrnormArma', PACKAGE = 'ZoopFit', n, Sigma)
+}
+
 productNormals <- function(mu, prec) {
     .Call('_ZoopFit_productNormals', PACKAGE = 'ZoopFit', mu, prec)
 }

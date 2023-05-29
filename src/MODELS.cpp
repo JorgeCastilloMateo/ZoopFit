@@ -55,6 +55,14 @@ arma::mat rWishart(arma::mat V, int p, double n) {
 //    NORMAL    //
 //////////////////
 
+// Multivariate Normal Samples
+// [[Rcpp::export]]
+arma::mat mvrnormArma(int n, arma::mat Sigma) {
+  int ncols = Sigma.n_cols;
+  arma::mat Y = arma::randn(n, ncols);
+  return Y * arma::chol(Sigma);
+}
+
 //' COMPUTE PRODUCT OF NORMAL DENSITIES
 ////' @param mu vector mean
 ////' @param prec vector precision

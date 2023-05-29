@@ -65,6 +65,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// mvrnormArma
+arma::mat mvrnormArma(int n, arma::mat Sigma);
+RcppExport SEXP _ZoopFit_mvrnormArma(SEXP nSEXP, SEXP SigmaSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type Sigma(SigmaSEXP);
+    rcpp_result_gen = Rcpp::wrap(mvrnormArma(n, Sigma));
+    return rcpp_result_gen;
+END_RCPP
+}
 // productNormals
 arma::vec productNormals(arma::vec mu, arma::vec prec);
 RcppExport SEXP _ZoopFit_productNormals(SEXP muSEXP, SEXP precSEXP) {
@@ -714,6 +726,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_ZoopFit_dtnorm", (DL_FUNC) &_ZoopFit_dtnorm, 5},
     {"_ZoopFit_rfnorm", (DL_FUNC) &_ZoopFit_rfnorm, 2},
     {"_ZoopFit_rWishart", (DL_FUNC) &_ZoopFit_rWishart, 3},
+    {"_ZoopFit_mvrnormArma", (DL_FUNC) &_ZoopFit_mvrnormArma, 2},
     {"_ZoopFit_productNormals", (DL_FUNC) &_ZoopFit_productNormals, 2},
     {"_ZoopFit_meanGP", (DL_FUNC) &_ZoopFit_meanGP, 5},
     {"_ZoopFit_precGP", (DL_FUNC) &_ZoopFit_precGP, 5},

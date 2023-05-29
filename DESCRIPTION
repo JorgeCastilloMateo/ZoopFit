@@ -16,7 +16,8 @@ Description: This is the companion package for the paper Castillo-Mateo et al.
   outside of the data from the paper and it will likely lead to errors if used 
   with other datasets.
 License: GPL (>= 2)
-Imports: ggplot2, lubridate, Rcpp (>= 1.0.7), scales, stats
+Imports: ggplot2, lubridate, Rcpp (>= 1.0.7), 
+  scales, stats
 LinkingTo: Rcpp, RcppArmadillo
 Encoding: UTF-8
 RoxygenNote: 7.2.3
