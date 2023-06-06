@@ -1,6 +1,8 @@
-#' \strong{ZoopFit}: Statistical Modeling for Zooplankton Availability
-#' @aliases ZoopFit-package
+#' @name ZoopFit-package
 #' @aliases ZoopFit
+#' @docType package
+#' 
+#' @title \strong{ZoopFit}: Statistical Modeling for Zooplankton Availability
 #' 
 #' @description \strong{ZoopFit} is the companion package for the paper 
 #'   Castillo-Mateo et al. (2023). The package includes functions to fit and
@@ -34,11 +36,9 @@
 #'   Castillo-Mateo J, Gelfand AE, Hudak CA, Mayo CA, Schick RS (2023).
 #'   “Space-time multi-level modeling for zooplankton abundance employing double data fusion and calibration.”
 #'   \emph{Manuscript submitted for publication}.
-#' 
-#' @docType package
+#'
 #' @author Jorge Castillo-Mateo <jorgecastillomateo@gmail.com>
 #' @import Rcpp
 #' @importFrom Rcpp evalCpp
 #' @useDynLib ZoopFit
-#' @name ZoopFit
 NULL  
