@@ -1,8 +1,4 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
+
 # ZoopFit
 The R package *ZoopFit* is the companion package for the paper Castillo-Mateo et al. (2023) <doi:update-when-available>. The package includes functions to fit and predict with the double data fusion and calibration models from the paper. 
 
@@ -21,12 +17,12 @@ remotes::install_github("JorgeCastilloMateo/ZoopFit")
 ### Data for Fitting Zooplankton Model
 Once the `ZoopFit` package is installed, we progress to the data. 
 
-> Note that the data were collected by and are property of the Center for Coastal Studies. We share a small subset of these data here to show how the model fitting works. To fully reproduce this analysis, you will need to contact CCS to get access via a data sharing agreement. 
+> Note that the data were collected by and are property of the Center for Coastal Studies. We share a small 200 row subset of these data here to show how the model fitting works. To fully reproduce this analysis, you will need to contact CCS to get access via a data sharing agreement. 
 
-To access the data, simply load in the R data object
+To access the data, simply load in the R data object. 
 
 ```r
-load("~/Documents/_research/manuscripts/CCB_zooplankton/2022-02-26_Castillo-Mateo et al. - Zooplankton Calibration/code-flow/zoop.Rdata")
+load("zoop_snippet.Rdata")
 ```
 
 This object contains 11 components:
@@ -54,6 +50,9 @@ ccb_crs <- paste("+proj=aea +lat_1=40",
                  "+x_0=0 +y_0=0",
                  "+ellps=WGS84 +datum=WGS84 +units=m +no_defs")
 ```
+
+### Simulation Study
+To reproduce the simulation study in section 3 of the paper, see this file: `inst/scripts/00simulation.R`
 
 ### Data for Fitting the Whale Model
 To fit the zooplankton model one of the covariates above `X[, 1]` is a binary vector of whale presence and absence.
