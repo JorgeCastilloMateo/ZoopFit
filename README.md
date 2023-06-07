@@ -1,8 +1,7 @@
-
 # ZoopFit
-The R package *ZoopFit* is the companion package for the paper Castillo-Mateo et al. (2023) <doi:update-when-available>. The package includes functions to fit and predict with the double data fusion and calibration models from the paper. 
+The R package *ZoopFit* is the companion package for the paper Castillo-Mateo et al. (2023) <doi:update-when-available>. The package includes a data snippet and functions to fit and predict with the double data fusion and calibration models from the paper. 
 
-**Warning:** Please note that the code provided is for the paper only and a generalization is under development. I do not guarantee that it will work outside of the data from the paper and it will likely lead to errors if used with other datasets.
+> **Warning:** Please note that the code provided is for the paper only and a generalization is under development. I do not guarantee that it will work properly outside of the data from the paper.
 
 ## Installation
 You can install the **development** version from
@@ -14,6 +13,9 @@ remotes::install_github("JorgeCastilloMateo/ZoopFit")
 ```
 
 ## Workflow of the paper
+### Simulation Study
+To reproduce the simulation study in Section 3 of the paper, see this file: `inst/scripts/00simulation.R`
+
 ### Data for Fitting Zooplankton Model
 Once the `ZoopFit` package is installed, we progress to the data. 
 
@@ -21,8 +23,8 @@ Once the `ZoopFit` package is installed, we progress to the data.
 
 To access the data, simply load in the R data object. 
 
-```r
-load("zoop_snippet.Rdata")
+```s
+data("zoop_snippet")
 ```
 
 This object contains 11 components:
@@ -39,20 +41,17 @@ This object contains 11 components:
 10. `Y1` - the measured total zooplankton recorded (log organisms per m^3) by the surface tow
 11. `Y2` - the measured total zooplankton recorded (log organisms per m^3) by the oblique tow
 
-The indicator variables are comprised of 0s and 1s and are all the same length as the date vector, whereas the data vectors vary in length according to their sampling status, i.e. `sum(oneT1) == length(T1)`.
+The indicator variables are comprised of 0s and 1s and are all the same length as all the other vectors, whereas the functions require the measured vectors vary in length according to their sampling status, i.e. `sum(oneT1) == length(T1)`. This can be done with `T1 <- T1[oneT1 == 1]`.
 
 #### Projection Details
 We use an Albers Equal Area projection
 
-```r
+```s
 ccb_crs <- paste("+proj=aea +lat_1=40",
                  "+lat_2=45 +lat_0=42 +lon_0=-70",
                  "+x_0=0 +y_0=0",
                  "+ellps=WGS84 +datum=WGS84 +units=m +no_defs")
 ```
-
-### Simulation Study
-To reproduce the simulation study in section 3 of the paper, see this file: `inst/scripts/00simulation.R`
 
 ### Data for Fitting the Whale Model
 To fit the zooplankton model one of the covariates above `X[, 1]` is a binary vector of whale presence and absence.
@@ -61,10 +60,13 @@ To fit the zooplankton model one of the covariates above `X[, 1]` is a binary ve
 
 We will need an NARW p/a surface for prediction, and the way that is done is via a temporally dynamic model that is fit separately from the zooplankton model. We detail this below after describing the workflow of the zooplankton model.
 
-### Zooplankton Model Fitting
-The workhorse function is `GibbsZoop.R`, and will return a matrix with posterior samples from model parameters: rows are iterations and columns are parameters. Here we show how to call the function in order to fit two MCMC chains. We feed all 11 data objects into the function, we choose the model (more below), and we specify MCMC-specific information about the burnin, the length of the chain, thinning, and how frequently we report the progress. 
+To see an example with simulated data fitting the whale model, 
+see this file: `inst/scripts/02modelWhales.R`
 
-```r
+### Zooplankton Model Fitting
+The workhorse function is `GibbsZoop.R`, and will return a matrix with posterior samples from model parameters: rows are iterations and columns are parameters. Here we show how to call the function in order to fit two MCMC chains. We feed all 11 data objects into the function, we choose the model (more below), and we specify MCMC-specific information about the burn-in, the length of the chain, thinning, and how frequently we report the progress. 
+
+```s
 MODEL <- list()
 MODEL[[1]] <- GibbsZoop(
   Y1, Y2, T1, T2, 
@@ -82,28 +84,27 @@ MODEL[[2]] <- GibbsZoop(
 )
 ```
 
-The default model `coreTime` is the one used in the manuscript, but the function can flexibly accommodate 5 different formulations: 1) a linear model (`lm`) in the calibration, 2) a lm with a spatially varying intercept `GP`, 3) a lm with spatially varying intercept and slope `GPs`, 4) the same with coregionalization `cor`, and 5) the same with time varying coefs `corTime`. 
+The default model `"corTime"` is the full model used in the manuscript, but the function can flexibly accommodate 5 different formulations: 1) a linear model (`lm`) in the calibration, 2) a lm with a spatially varying intercept `GP`, 3) a lm with spatially varying intercept and slope `GPs`, 4) the same with coregionalization `cor`, and 5) the same with time varying coefs `corTime`. 
 
 After running `GibbsZoop` then we check for scale reduction, i.e., Gelman and Rubin's convergence diagnostic with the `coda` package.
 
-```r
-library(coda)
-model <- MODEL
-R <- rep(NA, ncol(model[[1]]))
-for (i in 1:ncol(model[[1]])) {
+```s
+library("coda")
+R <- rep(NA, ncol(MODEL[[1]]))
+for (i in 1:ncol(MODEL[[1]])) {
   print(i)
-  R[i] <- try(gelman.diag(mcmc.list(mcmc(model[[1]][,i]), mcmc(model[[2]][,i])))$psrf[1])
+  R[i] <- try(gelman.diag(mcmc.list(mcmc(MODEL[[1]][,i]), mcmc(MODEL[[2]][,i])))$psrf[1])
 }
 max(R[!is.nan(R)])
 
 MODEL <- rbind(MODEL[[1]], MODEL[[2]])
 ```
 
-We then perform Bayesian Kriging for the Gaussian Processes. This is done with the `GP` function, and the goal is to use coefficients from the locations where we fit the Gaussian Processes (recall the `coords` in the data). We used these parameters to predict the surfaces across a new grid - in this case the entire CCB. (See `01grid.R` for details of the grid within CCB.)
+We then perform Bayesian Kriging for the Gaussian Processes. This is done with the `GP` function, and the goal is to use coefficients from the locations where we fit the Gaussian Processes (recall the `coords` in the data). We used these parameters to predict the surfaces across a new grid - in this case the entire CCB. (See `inst/scripts/01grid.R` for details of the grid within CCB.)
 
 We note the contents of the function:
 
-```r
+```s
 # SIMULATE GP's (fixed decay)
 # @param GP values of the GP at the observed locations
 # @param mean,prec posterior mean and precision of the GP
@@ -162,7 +163,7 @@ GP <- function(GP, mean, prec, coords, grid) {
 
 ...as well as how its called. Note that since we have fitted yearly GPs, these are called in a loop over year:
 
-```r
+```s
 year <- lubridate::year(date)
 T <- length(unique(year))
 firstYear <- min(year) - 1
@@ -180,30 +181,18 @@ for (t in 1:17) {
 ```
 
 ### NARW Model Fitting
-This is done in `jags`; see the `02modelWhales.R` script for fitting that model, which needs to be fit prior to prediction. We start by simulating whale abundance.
-
-```r
-N    <- 2000
-day  <- sample(181, N, replace = TRUE)
-year <- sample(17, N, replace = TRUE)
-beta <- c(5.7, 1.25)
-X    <- cbind(sin(2 * pi * day / 365), 
-              cos(2 * pi * day / 365))
-yearEffect <- rnorm(17, -8, 0.84)
-Y    <- rbinom(N, size = 1, 
-  prob = 1 / (1 + exp(- (X %*% beta + yearEffect[year]))))
-```
+This is done in `jags`; see the `02modelWhales.R` script for fitting that model, which needs to be fit prior to prediction. 
 
 You will need to have a current installation of `jags` on your computer (see the `jags` [Sourceforge page](https://mcmc-jags.sourceforge.io) for platform-specific installation information), as well as two R libraries to call `jags`:
 
-```r
+```s
 library("rjags")
 library("jagsUI")
 ```
 
 Define the model in the `jags` language:
 
-```r
+```s
 model.JAGS <-"
   model{
     for (i in 1:N) {
@@ -221,9 +210,9 @@ model.JAGS <-"
  }"
 ```
 
-We fit the model and then make daily posterior predictions.
+We fit the model and then make daily posterior predictions (see the script mentioned to see the arguments used).
 
-```r
+```s
 model <- autojags(
   data = list('Y' = Y, 'N' = N, 'X' = X, 'year' = year, 'T' = 17, 'k' = 2),
   parameters.to.save = c("beta0", "beta", "psi", "tau_psi"),
@@ -238,7 +227,7 @@ model <- update(model, parameters.to.save = c("beta0", "beta", "psi", "tau_psi")
 
 When we make predictions, we create two objects that are used in the plotting of the zooplankton predictions. These objects are `probWhales` and `predictWhales`. The dimensions of each are the number of stored MCMC iterations (rows) by the prediction days (181 days across 17 years) (columns).
 
-```r
+```s
 m <- 17 * 181 # number of new data
 probWhales    <- matrix(nrow = 2000, ncol = m)
 predictWhales <- matrix(nrow = 2000, ncol = m)
@@ -263,14 +252,14 @@ The function then predicts and plots the mean zoop, the standard deviation, the 
 
 We call the `predictMAPZOOP` function over a series of three different days that are emblematic of the three zooplankton regimes discussed in the paper, e.g.,
 
-```r
+```s
 predictMAPZOOP(MODEL, "2011-04-29", predictWhales, 
                gamma0s, etats, grid, eeuu, zlim = rbind(c(250, 2650), c(0,1)))
 ```
 
 We can also examine the yearly average in a similar fashion with a slightly different function (`predictMAPZOOPyear`) whose logic is the same, but accounts for changes within an entire year as opposed to a single day. To make yearly maps:
 
-```r
+```s
 for (i in 2003:2019) {
   print(i)
   predictMAPZOOPyear(MODEL, i, 1:181, predictWhales, 
@@ -280,14 +269,14 @@ for (i in 2003:2019) {
 
 To examine the daily time series of zooplankton, we use the `tsZOOP` function. This returns a three element list containing the posterior predictive samples of predicted temperatures, zooplankton and zooplankton exceedance. To summarize the posteriors and make plots, we call the function and then derive the quantiles of the parameter of interest. For example, for zooplankton if we want to extract the daily time series:
 
-```r
+```s
 my_out <- tsZOOP
 Ynew <- my_out$predictZOOP
 ```
 
 To then visualize it and make the figure from the manuscript:
 
-```r
+```s
 m <- 181*17
 YnewM   <- c(apply(Ynew, 2:3, mean))
 Ynewq05 <- c(apply(Ynew, 2:3, quantile, prob = 0.05))
@@ -312,7 +301,7 @@ par(mar = c(5,5,5,2) + 0.1)
 
 Alternatively if we want to mean exceedance, we first extract the different list element and then summarize and plot:
 
-```r
+```s
 Ynew <- my_out$IndZOOPabove1000
 m <- 181*17
 YnewM   <- c(apply(Ynew, 2:3, mean))

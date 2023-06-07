@@ -63,7 +63,7 @@ arma::mat mvrnormArma(int n, arma::mat Sigma) {
   return Y * arma::chol(Sigma);
 }
 
-//' COMPUTE PRODUCT OF NORMAL DENSITIES
+////' COMPUTE PRODUCT OF NORMAL DENSITIES
 ////' @param mu vector mean
 ////' @param prec vector precision
 ////' @return vector(0) mean, vector(1) variance

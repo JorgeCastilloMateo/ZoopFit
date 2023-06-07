@@ -2,7 +2,7 @@ Package: ZoopFit
 Type: Package
 Title: Statistical Modeling for Zooplankton Availability
 Version: 0.0.4
-Date: 2023-05-28
+Date: 2023-06-06
 Authors@R: c(
   person("Jorge", "Castillo-Mateo", role = c("aut","cre","cph"), email = "jorgecastillomateo@gmail.com", comment = c(ORCID = "0000-0003-3859-0248"))
     )
