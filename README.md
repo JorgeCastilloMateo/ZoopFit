@@ -1,5 +1,5 @@
 # ZoopFit
-The R package *ZoopFit* is the companion package for the paper Castillo-Mateo et al. (2023) <doi:update-when-available>. The package includes a data snippet and functions to fit and predict with the double data fusion and calibration models from the paper. 
+The R package *ZoopFit* is the companion package for the paper Castillo-Mateo et al. (2023) <doi:10.1007/s10651-023-00583-6>. The package includes a data snippet and functions to fit and predict with the double data fusion and calibration models from the paper. 
 
 > **Warning:** Please note that the code provided is for the paper only and a generalization is under development. I do not guarantee that it will work properly outside of the data from the paper.
 
@@ -323,23 +323,26 @@ par(mar = c(5,5,5,2) + 0.1) ## default is c(5,4,4,2) + 0.1
 To cite *ZoopFit* in publications use:
 
 Castillo-Mateo J, Gelfand AE, Hudak CA, Mayo CA, Schick RS (2023).
-“Space-time multi-level modeling for zooplankton abundance employing double data fusion and calibration.”
+“Space-time multi-level modeling for zooplankton abundance employing double data fusion and calibration.” 
+*Environmental and Ecological Statistics*, **30**(4), 769--795.
+<doi:10.1007/s10651-023-00583-6>.
 
 A BibTeX entry for LaTeX users is
 
 @Article{,  
 &nbsp;&nbsp;  title = {Space-time multi-level modeling for zooplankton abundance employing double data fusion and calibration},  
 &nbsp;&nbsp;  author = {Jorge Castillo-Mateo and Alan E. Gelfand, Christine A. Hudak, Charles A. Mayo and Robert S. Schick},  
-&nbsp;&nbsp;  journal = {Manuscript submitted for publication},  
+&nbsp;&nbsp;  journal = {Environmental and Ecological Statistics},  
 &nbsp;&nbsp;  year = {2023},  
-&nbsp;&nbsp;  volume = {},  
-&nbsp;&nbsp;  number = {},  
-&nbsp;&nbsp;  pages = {},  
-&nbsp;&nbsp;  doi = {},  
+&nbsp;&nbsp;  volume = {30},  
+&nbsp;&nbsp;  number = {4},  
+&nbsp;&nbsp;  pages = {769--795},  
+&nbsp;&nbsp;  doi = {10.1007/s10651-023-00583-6},  
 }
 
   
 ## References
 Castillo-Mateo J, Gelfand AE, Hudak CA, Mayo CA, Schick RS (2023).
 “Space-time multi-level modeling for zooplankton abundance employing double data fusion and calibration.” 
-*Manuscript submitted for publication*.
+*Environmental and Ecological Statistics*, **30**(4), 769--795.
+<doi:10.1007/s10651-023-00583-6>.
